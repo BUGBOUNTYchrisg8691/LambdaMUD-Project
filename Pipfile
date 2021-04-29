@@ -17,6 +17,10 @@ django-rest-api = "*"
 
 [dev-packages]
 pylint = "*"
+pynvim = "*"
+neovim = "*"
+flake8 = "*"
+isort = "*"
 
 [requires]
 python_version = "3.7"
