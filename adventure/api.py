@@ -1,12 +1,14 @@
+import json
+
+from decouple import config
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from pusher import Pusher
-from django.http import JsonResponse
-from decouple import config
-from django.contrib.auth.models import User
-from .models import *
 from rest_framework.decorators import api_view
-import json
+
+from .models import *
 
 # instantiate pusher
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -64,4 +66,13 @@ def move(request):
 @api_view(["POST"])
 def say(request):
     # IMPLEMENT
+    player = request.user.player
+    print(player)
+    player_id = player.id
+    print(player_id)
+    player_uuid = player.uuid
+    print(player_uuid)
+    data = json.loads(request.body)
+    print(data)
+    pusher.trigger(f"p-channel-${player_uuid}", u"broadcast", {"message": "hello world"})
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
